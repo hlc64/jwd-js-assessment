@@ -19,37 +19,47 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 
-window.addEventListener('DOMContentLoaded', () => {
-  const start = document.querySelector('#start');
-  start.addEventListener('click', function (e) {
-    document.querySelector('#quizBlock').style.display = 'block';
-    start.style.display = 'none';
+window.addEventListener("DOMContentLoaded", () => {
+  const start = document.querySelector("#start");
+  start.addEventListener("click", function (e) {
+    document.querySelector("#quizBlock").style.display = "block";
+    start.style.display = "none";
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
   const quizArray = [
     {
-      q: 'Which is the third planet from the sun?',
-      o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
+      q: "Which is the third planet from the sun?",
+      o: ["Saturn", "Earth", "Pluto", "Mars"],
       a: 1, // array index 1 - so Earth is the correct answer here
     },
     {
-      q: 'Which is the largest ocean on Earth?',
-      o: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
+      q: "Which is the largest ocean on Earth?",
+      o: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
       a: 3,
     },
     {
-      q: 'What is the capital of Australia',
-      o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
+      q: "What is the capital of Australia",
+      o: ["Sydney", "Canberra", "Melbourne", "Perth"],
       a: 1,
+    },
+    {
+      q: "Which of these is the national animal of Australia",
+      o: ["Lion", "Kangaroo", "Dolphin", "Horse"],
+      a: 1,
+    },
+    {
+      q: "What is the largest city in Australia by area",
+      o: ["Sydney", "Melbourne", "Canberra", "Perth"],
+      a: 0,
     },
   ];
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
-    const quizWrap = document.querySelector('#quizWrap');
-    let quizDisplay = '';
+    const quizWrap = document.querySelector("#quizWrap");
+    let quizDisplay = "";
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
@@ -63,6 +73,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  console.log(displayQuiz);
+
   // Calculate the score
   const calculateScore = () => {
     let score = 0;
@@ -71,19 +83,40 @@ window.addEventListener('DOMContentLoaded', () => {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
+        liElement = document.querySelector("#" + li);
+        radioElement = document.querySelector("#" + r);
 
-        if (quizItem.a == i) {
+        if (quizItem.a === i) {
           //change background color of li element here
+          document.getElementById(li).style.backgroundColor = "green";
         }
 
-        if (radioElement.checked) {
-          // code for task 1 goes here
+        if (radioElement.checked && quizItem.a === i) {
+          score++;
         }
       }
     });
+
+    document.getElementById("score").innerHTML =
+      "Your score is " + score + " out of 5.";
   };
+  // console.log(calculateScore);
+  // console.log(score);
+
+  //Add an Event listener for the submit button, which will display the score and highlight
+  //the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you.
+  document
+    .querySelector("#btnSubmit")
+    .addEventListener("click", calculateScore);
+
+  // Reload the page when the reset button is clicked (hint: search window.location)
+  document.getElementById('btnReset').addEventListener('click', ()=>{
+    window.location.reload()
+  });
+
+  // Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers ... 
+  //id is "time"
+
 
   // call the displayQuiz function
   displayQuiz();
